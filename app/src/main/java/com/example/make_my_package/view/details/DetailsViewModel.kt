@@ -58,12 +58,20 @@ class DetailsViewModel : ViewModel() {
         calculateTotalPrice()
     }
 
-    fun onOptionSelected(optionId: String, isSelected: Boolean, price: Int) {
+    fun onOptionSelected(optionId: String, isSelected: Boolean, price: Int, maxRange: Int, currentSelectedCount: Int) {
+        if (isSelected && currentSelectedCount >= maxRange) {
+            return
+        }
+
         val updatedOptions = selectedOptions.value.toMutableMap().apply {
             put(optionId, isSelected)
         }
         selectedOptions.value = updatedOptions
-        associateQuantity.value = 1
+
+        if (!isSelected) {
+            updateOptionQuantity(optionId, 1)
+        }
+
         calculateTotalPrice()
     }
 

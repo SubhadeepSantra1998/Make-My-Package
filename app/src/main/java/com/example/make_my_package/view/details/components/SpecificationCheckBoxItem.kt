@@ -28,7 +28,8 @@ fun SpecificationCheckboxItem(
     isQuantityEnabled: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     viewModel: DetailsViewModel,
-    optionId: String
+    optionId: String,
+    isOptionEnabled: Boolean
 ) {
     val quantity = viewModel.optionQuantities.value[optionId] ?: 1
 
@@ -41,11 +42,11 @@ fun SpecificationCheckboxItem(
         Checkbox(
             checked = isChecked,
             onCheckedChange = { newCheckedState ->
-                onCheckedChange(newCheckedState)
-                if (!newCheckedState) {
-                    viewModel.updateOptionQuantity(optionId, 1)
+                if (isOptionEnabled || !newCheckedState) {
+                    onCheckedChange(newCheckedState)
                 }
-            }
+            },
+            enabled = isOptionEnabled || isChecked
         )
 
         NormalBodyTextComponent(

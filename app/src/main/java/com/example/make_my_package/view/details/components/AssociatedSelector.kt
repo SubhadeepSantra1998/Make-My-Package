@@ -20,21 +20,32 @@ fun AssociatedSelector(
 ) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         specifications.forEach { specification ->
-            NormalTitleTextComponent(value = specification.name.firstOrNull() ?: "Specification")
+            val selectedCount = viewModel.selectedOptions.value
+                .filter { it.value && specification.list.any { option -> option._id == it.key } }.size
 
-            NormalBodyTextComponent(value = "Choose up to 1")
+            NormalTitleTextComponent(value = specification.name.firstOrNull() ?: "Specification")
+            NormalBodyTextComponent(value = "Choose up to ${specification.max_range}")
 
             specification.list.forEach { option ->
+                val isChecked = viewModel.selectedOptions.value[option._id] ?: false
+
                 SpecificationCheckboxItem(
                     optionName = option.name.firstOrNull() ?: "",
                     price = option.price,
-                    isChecked = viewModel.selectedOptions.value[option._id] ?: false,
+                    isChecked = isChecked,
                     isQuantityEnabled = specification.user_can_add_specification_quantity,
                     onCheckedChange = { isChecked ->
-                        viewModel.onOptionSelected(option._id, isChecked, option.price)
+                        viewModel.onOptionSelected(
+                            optionId = option._id,
+                            isSelected = isChecked,
+                            price = option.price,
+                            maxRange = specification.max_range,
+                            currentSelectedCount = selectedCount
+                        )
                     },
                     viewModel = viewModel,
-                    optionId = option._id
+                    optionId = option._id,
+                    isOptionEnabled = selectedCount < specification.max_range || isChecked  // Allow unchecking
                 )
             }
         }
