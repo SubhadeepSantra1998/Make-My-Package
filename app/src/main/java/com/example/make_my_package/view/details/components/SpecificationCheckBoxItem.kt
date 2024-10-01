@@ -64,13 +64,14 @@ fun SpecificationCheckboxItem(
                     viewModel.updateOptionQuantity(optionId, newQuantity)
                 }
             )
-        } else {
-            NormalBodyTextComponent(
+        }
+
+        NormalBodyTextComponent(
                 value = "₹${price}",
                 modifier = Modifier
                     .widthIn(min = 60.dp),
                 textAlign = TextAlign.End
             )
-        }
+
     }
 }

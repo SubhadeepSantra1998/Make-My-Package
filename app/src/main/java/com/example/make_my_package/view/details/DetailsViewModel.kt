@@ -55,6 +55,8 @@ class DetailsViewModel : ViewModel() {
     fun onApartmentSizeSelected(sizeId: String) {
         selectedApartmentSizeId.value = sizeId
         quantity.value = 1
+        selectedOptions.value = emptyMap()
+        optionQuantities.value = emptyMap()
         calculateTotalPrice()
     }
 
