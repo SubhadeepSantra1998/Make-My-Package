@@ -67,11 +67,10 @@ fun SpecificationCheckboxItem(
         }
 
         NormalBodyTextComponent(
-                value = "₹${price}",
-                modifier = Modifier
-                    .widthIn(min = 60.dp),
-                textAlign = TextAlign.End
-            )
-
+            value = "₹$price",
+            modifier = Modifier
+                .widthIn(min = 60.dp),
+            textAlign = TextAlign.End
+        )
     }
 }

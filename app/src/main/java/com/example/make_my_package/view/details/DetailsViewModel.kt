@@ -60,9 +60,27 @@ class DetailsViewModel : ViewModel() {
         calculateTotalPrice()
     }
 
-    fun onOptionSelected(optionId: String, isSelected: Boolean, price: Int, maxRange: Int, currentSelectedCount: Int) {
-        if (isSelected && currentSelectedCount >= maxRange) {
-            return
+    fun onOptionSelected(
+        optionId: String,
+        isSelected: Boolean,
+        price: Int,
+        maxRange: Int,
+        specificationId: String
+    ) {
+        val selectedOptionsForSpec = selectedOptions.value.filter {
+            it.value && packageModel.value?.specifications?.any { spec ->
+                spec._id == specificationId && spec.list.any { option -> option._id == it.key }
+            } == true
+        }
+
+        if (isSelected && selectedOptionsForSpec.size >= maxRange) {
+            val firstSelectedOptionId = selectedOptionsForSpec.keys.firstOrNull()
+            firstSelectedOptionId?.let {
+                val updatedOptions = selectedOptions.value.toMutableMap().apply {
+                    put(it, false)
+                }
+                selectedOptions.value = updatedOptions
+            }
         }
 
         val updatedOptions = selectedOptions.value.toMutableMap().apply {

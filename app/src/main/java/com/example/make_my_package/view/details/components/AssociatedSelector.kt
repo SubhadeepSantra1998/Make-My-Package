@@ -40,12 +40,12 @@ fun AssociatedSelector(
                             isSelected = isChecked,
                             price = option.price,
                             maxRange = specification.max_range,
-                            currentSelectedCount = selectedCount
+                            specificationId = specification._id
                         )
                     },
                     viewModel = viewModel,
                     optionId = option._id,
-                    isOptionEnabled = selectedCount < specification.max_range || isChecked  // Allow unchecking
+                    isOptionEnabled = true
                 )
             }
         }
